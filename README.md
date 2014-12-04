@@ -17,6 +17,8 @@ Example:
 
     dynaspan_text_field(@article, comment, :note, '[edit]')
 
+This will show the value of note in the comment object as plain text.  It can be clicked on to instantly become a text field input.  And once unselected the `@article` object will update with its nested attribute object `comment` and its new value in the `note` attribute.
+
 You can use either `dynaspan_text_field` or `dynaspan_text_area` in any of your views.  There are two mandatory parameters.  The first is a the main Object model instance you will be updating.  And the other mandatory field is the symbol of the attribute to update.  There are two optional fields.  The first is the nested attribute object which will have its field updated.  And the last is the optional text for `[edit]`-ing (clicking on to edit which is useful for blank fields).
 
     dynaspan_text_field(Object,OptionalNestedObject,SymField,OptionalEditText)
