@@ -1,4 +1,4 @@
-<%# This is used through the helper method dynaspan_update_field %>
+<%# This is used through the helper method dynaspan_text_field %>
 <%= hidden_field_tag "last_dyna_span_val_#{unique_ref_id}", attr_object.try(attrib) || master_ds_object.try(attrib), id: "last_dyna_span_val_#{unique_ref_id}" %>
 <div id="<%= "dyna_span_div#{unique_ref_id}" %>" class='dyna-span' style="display:none;">
   <%= form_for(master_ds_object, method: :patch, remote: true, authenticity_token: true) do |f| %>
