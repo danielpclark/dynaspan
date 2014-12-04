@@ -9,6 +9,7 @@ Dynaspan also accepts updating an attribute for a nested object, but only 1 leve
  - [ ] Add `gem 'dynaspan'` to your Gemfile.
  - [ ] Run `bundle`.
  - [ ] Next add `include Dynaspan::ApplicationHelper` inside your **ApplicationHelper** module.
+ - [ ] Add `//= require dynaspan/dynaspan` to your **application.js** file.
  - [ ] And it's installed!
 
 ###Usage
