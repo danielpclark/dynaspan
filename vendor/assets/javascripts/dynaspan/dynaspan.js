@@ -1,4 +1,6 @@
-﻿(function($){
+﻿// MIT LICENSE
+// Copyright (c) 2014 Daniel P. Clark
+(function($){
   $.fn.dynaspan = function(){};
 
   $.fn.dynaspan.upLast = function(uniq_id_ref){
@@ -6,7 +8,7 @@
   };
 
   $.fn.dynaspan.upShow = function(uniq_id_ref){
-    $('#dyna_span_div' + uniq_id_ref).show().find('input').focus();
+    $('#dyna_span_div' + uniq_id_ref).show().find('.dyna-span-input').focus();
     $('#dyna_span_span' + uniq_id_ref).hide();
   };
 

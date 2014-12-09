@@ -5,10 +5,10 @@
     <% if master_ds_object.nested_attributes_options.keys.any? {|i| i.to_s.=~(/#{attr_object.class.try(:model_name).try(:i18n_key).to_s}/) || i.to_s.=~(/#{attr_object.class.try(:table_name)}/) } and !attr_object.nil? %>
       <%= f.fields_for master_ds_object.nested_attributes_options.keys.select {|i| i.to_s.=~(/#{attr_object.class.model_name.i18n_key.to_s}/) || i.to_s.=~(/#{attr_object.class.table_name}/) }.first, attr_object do |a|%>
         <%= a.hidden_field :id, value: attr_object.id %>
-        <%= a.text_field attrib, id: "dyna_span_field_val_#{unique_ref_id}", class: 'dyna-span form-control', onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');" %>
+        <%= a.text_field attrib, id: "dyna_span_field_val_#{unique_ref_id}", class: 'dyna-span form-control dyna-span-input', onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');" %>
       <% end %>
     <% else %>
-      <%= f.text_field attrib, id: "dyna_span_field_val_#{unique_ref_id}", class: 'dyna-span form-control', onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');" %>
+      <%= f.text_field attrib, id: "dyna_span_field_val_#{unique_ref_id}", class: 'dyna-span form-control dyna-span-input', onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');" %>
     <% end %>
   <% end %>
 </div>
