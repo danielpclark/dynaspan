@@ -10,6 +10,7 @@
   $.fn.dynaspan.upShow = function(uniq_id_ref){
     $('#dyna_span_div' + uniq_id_ref).show().find('.dyna-span-input').focus();
     $('#dyna_span_span' + uniq_id_ref).hide();
+    $("#dyna_span_block" + uniq_id_ref).addClass("ds-dialog-open");
   };
 
   $.fn.dynaspan.upHide = function(uniq_id_ref){
@@ -18,10 +19,12 @@
     $('#last_dyna_span_val_' + uniq_id_ref).val(field_val);
     $('#dyna_span_span' + uniq_id_ref).show().html(field_val);
     $('#dyna_span_div' + uniq_id_ref).hide();
+    var ds_block = $("#dyna_span_block" + uniq_id_ref);
+    ds_block.removeClass("ds-dialog-open");
     if (field_val.length == 0){
-      $("#dyna_span_block" + uniq_id_ref).removeClass("ds-content-present")
+      ds_block.removeClass("ds-content-present")
     } else {
-      $("#dyna_span_block" + uniq_id_ref).addClass("ds-content-present")
+      ds_block.addClass("ds-content-present")
     }
   };
 })(jQuery);

@@ -53,6 +53,20 @@ box.  If you don't want it to drop you can style it with the proper CSS selector
 field height is to maintain the position of the edit text.  With jQuery you can also set style for
 hidden and visible changes.
 
+In version 0.0.7 I've added a class to the parent div object for when the text field dialog is open.  The class
+is "ds-dialog-open". This is also to use in CSS styles.  This feature was added since CSS doesn't support
+calling parents with selectors.  Example usage:
+
+```css
+.ds-content-present > .dyna-span-edit-text {
+  margin-top:-18px;
+}
+
+.ds-dialog-open > .dyna-span-edit-text {
+  margin-top:-24px;
+}
+```
+
 ###License
 
 The MIT License (MIT)
