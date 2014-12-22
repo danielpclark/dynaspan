@@ -8,7 +8,7 @@ Dynaspan also accepts updating an attribute for a nested object, but only 1 leve
 
 ###Installation
 
- - [ ] Add `gem 'dynaspan', '~> 0.0.4'` to your Gemfile.
+ - [ ] Add `gem 'dynaspan'` to your Gemfile.
  - [ ] Run `bundle`.
  - [ ] Next add `include Dynaspan::ApplicationHelper` inside your **ApplicationHelper** module.
  - [ ] Add `//= require dynaspan/dynaspan` to your **application.js** file.
@@ -42,6 +42,16 @@ The AJAX call will call the update method on your first Object parameter via PAT
 **You're welcome!**
 
 -- Daniel P. Clark
+
+###Styles
+
+As of version 0.0.6 a class will be dynamically added/removed to a div tag containing the class "dyna-span".
+That class is "ds-content-present".  The purpose of this class is to allow CSS content styles depending on
+whether your text exists or not.  The '[edit]' text you can use as a parameter normally drops below the input
+box.  If you don't want it to drop you can style it with the proper CSS selector for content present.  E.G.
+`.ds-content-present > dyna-span-edit-text { margin-top:-18px; }` You can set the height to whatever your input
+field height is to maintain the position of the edit text.  With jQuery you can also set style for
+hidden and visible changes.
 
 ###License
 

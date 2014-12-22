@@ -18,5 +18,10 @@
     $('#last_dyna_span_val_' + uniq_id_ref).val(field_val);
     $('#dyna_span_span' + uniq_id_ref).show().html(field_val);
     $('#dyna_span_div' + uniq_id_ref).hide();
+    if (field_val.length == 0){
+      $("#dyna_span_block" + uniq_id_ref).removeClass("ds-content-present")
+    } else {
+      $("#dyna_span_block" + uniq_id_ref).addClass("ds-content-present")
+    }
   };
 })(jQuery);

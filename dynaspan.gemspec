@@ -13,5 +13,6 @@ Gem::Specification.new do |gem|
   gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   gem.name          = 'dynaspan'
   gem.require_paths = ['lib']
+  gem.required_ruby_version = '~> 2.0'
   gem.version       = Dynaspan::VERSION
 end
