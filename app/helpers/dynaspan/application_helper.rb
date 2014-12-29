@@ -27,6 +27,8 @@ module Dynaspan
       else
         raise 'You did not provide a symbol for the form field.'
       end
+      edit_text = nil unless edit_text.is_a? String
+      options = (parameters[-1].is_a?(Hash) ? parameters[-1] : {})
       render(
           partial: "dynaspan/dynaspan_text_#{kind}",
           locals: {
@@ -34,7 +36,8 @@ module Dynaspan
               attr_object: attr_object,
               attrib: attrib,
               unique_ref_id: dynaspan_counter,
-              dyna_span_edit_text: edit_text
+              dyna_span_edit_text: edit_text,
+              hidden_fields: options[:hidden_fields]
           }
       )
     end

@@ -66,6 +66,22 @@ calling parents with selectors.  Example usage:
 }
 ```
 
+###What's New
+
+####Version 0.0.8
+
+You can now provide an option hash as a last parameter.  Current
+valid options only include:
+
+    {
+      hidden_fields: { label: "value" }
+    }
+    
+You can add as many hidden fields to your Dynaspan objects as you'd like.
+
+Also the id parameter will only be passed to the server if it exists.  (No more empty
+string for id.)  This allows you to create "new" polymorphic child objects with Dynaspan.
+
 ###License
 
 The MIT License (MIT)
