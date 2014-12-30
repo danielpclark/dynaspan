@@ -23,7 +23,11 @@ Example #1:
 Example #2:
 
     dynaspan_text_field(profile, profile.websites, :url, '[edit]',
-                        {hidden_field: {page_name: 'page2'}, callback_on_update: "alert('Awesome!');"})
+                         {
+                           hidden_fields: {page_name: 'page2'},
+                           callback_on_update: "alert('Awesome!');"
+                         }
+                       )
 
 This will show the value of note in the comment object as plain text.  It can be clicked on to instantly become a text field input.  And once unselected the `@article` object will update with its nested attribute object `comment` and its new value in the `note` attribute.
 
