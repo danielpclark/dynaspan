@@ -37,7 +37,8 @@ module Dynaspan
               attrib: attrib,
               unique_ref_id: dynaspan_counter,
               dyna_span_edit_text: edit_text,
-              hidden_fields: options[:hidden_fields]
+              hidden_fields: options[:hidden_fields],
+              ds_callback_on_update: options[:callback_on_update]
           }
       )
     end

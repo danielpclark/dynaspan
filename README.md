@@ -68,6 +68,15 @@ calling parents with selectors.  Example usage:
 
 ###What's New
 
+####Version 0.0.9
+
+JavaScript callback option now available.  Whenever the Dynaspan field is submitted you can have Dynaspan call
+your own JavaScript method.
+
+    {
+      callback_on_update: "someMethod('some-relative-instance-value');"
+    }
+
 ####Version 0.0.8
 
 You can now provide an option hash as a last parameter.  Current

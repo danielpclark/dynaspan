@@ -26,5 +26,8 @@
     } else {
       ds_block.addClass("ds-content-present")
     }
+    if (ds_block.data('dsCallbackOnUpdate')){
+      eval(ds_block.data('dsCallbackOnUpdate'))
+    }
   };
 })(jQuery);
