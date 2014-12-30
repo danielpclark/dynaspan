@@ -13,6 +13,9 @@
         <% end %>
       <% else %>
         <%= f.text_field attrib, id: "dyna_span_field_val_#{unique_ref_id}", class: 'dyna-span form-control dyna-span-input', onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');" %>
+        <% hidden_fields.each do |hkey, hval| %>
+          <%= f.hidden_field hkey.to_sym, value: hval %>
+        <% end if hidden_fields %>
       <% end %>
     <% end %>
   </div>

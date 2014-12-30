@@ -16,16 +16,21 @@ Dynaspan also accepts updating an attribute for a nested object, but only 1 leve
 
 ###Usage
 
-Example:
+Example #1:
 
     dynaspan_text_field(@article, comment, :note, '[edit]')
+    
+Example #2:
+
+    dynaspan_text_field(profile, profile.websites, :url, '[edit]',
+                        {hidden_field: {page_name: 'page2'}, callback_on_update: "alert('Awesome!');"})
 
 This will show the value of note in the comment object as plain text.  It can be clicked on to instantly become a text field input.  And once unselected the `@article` object will update with its nested attribute object `comment` and its new value in the `note` attribute.
 
 You can use either `dynaspan_text_field` or `dynaspan_text_area` in any of your views.  There are two mandatory parameters.  The first is a the main Object model instance you will be updating.  And the other mandatory field is the symbol of the attribute to update.  There are two optional fields.  The first is the nested attribute object which will have its field updated.  And the last is the optional text for `[edit]`-ing (clicking on to edit which is useful for blank fields).
 
-    dynaspan_text_field(Object,OptionalNestedObject,SymField,OptionalEditText)
-    dynaspan_text_area(Object,OptionalNestedObject,SymField,OptionalEditText)
+    dynaspan_text_field(Object,OptionalNestedObject,SymField,OptionalEditText,OptionalOptionsHash)
+    dynaspan_text_area(Object,OptionalNestedObject,SymField,OptionalEditText,OptionalOptionsHash)
 
 The order is important.  And yes it does NOT change even if you just do:
 
@@ -68,6 +73,10 @@ calling parents with selectors.  Example usage:
 
 ###What's New
 
+####Version 0.1.0
+
+Added the same hidden_fields from version 0.0.8 to support non-nested Objects.  You can use them now on anything.
+
 ####Version 0.0.9
 
 JavaScript callback option now available.  Whenever the Dynaspan field is submitted you can have Dynaspan call
@@ -87,6 +96,8 @@ valid options only include:
     }
     
 You can add as many hidden fields to your Dynaspan objects as you'd like.
+
+>NOTE: In this version hidden fields only apply for nested attributes.
 
 Also the id parameter will only be passed to the server if it exists.  (No more empty
 string for id.)  This allows you to create "new" polymorphic child objects with Dynaspan.
