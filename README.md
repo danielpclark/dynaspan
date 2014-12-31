@@ -23,6 +23,8 @@ Simple example:
 And that's it.  As long as you have a User object with a name field, this will update through
 the UserController's update method.  **user** is an User Object instance eg: `user = User.first`.
 
+---
+
 Polymorphic/Nested Example #1:
 
     dynaspan_text_field(@article, comment, :note, '[edit]')
@@ -51,23 +53,23 @@ It is unconventional but the order remains the same despite the optional fields.
 
 ###Parameters
 
-The first parameter will always be the Object that will have its update method called.  It must be an instance of the Object.
+The **first** parameter will always be the Object that will have its update method called.  It must be an instance of the Object.
 For example current_user being an instance of User.
 
-The second parameter can be a symbol of the field you want to update on the main Object from the first parameter.
+The **second** parameter can be a symbol of the field you want to update on the main Object from the first parameter.
 
-The second field can also be a has_one or has_many subset of the first argument moving the symbol to modify to the third argument.
-For exampe dynaspan_text_field(author, author.stories, :title).  This works as a nested attribute so it include Polymorphic Objects.
+The **second** field can also be a has_one or has_many subset of the first argument moving the symbol to modify to the **third** argument.
+For example **dynaspan_text_field(author, author.stories, :title)**.  This works as a nested attribute so it include Polymorphic Objects.
 
 The last two parameters can be edit text, and then additional options (in that order).  Both are optional.  The edit text
 is a way to be able to click somewhere to open up the input to initially enter text.
 
 The options Hash currently has three options.
 
- - :hidden_fields will put in as many hidden fields as you include in a Hash with key->value matching to name->value
- - :callback_on_update is a no frills callback.  It runs whatever command you give it whenever Dynaspan submits an update
+ - **:hidden_fields** will put in as many hidden fields as you include in a Hash with key->value matching to name->value
+ - **:callback_on_update** is a no frills callback.  It runs whatever command you give it whenever Dynaspan submits an update
  to the server
- - :callback_with_values will allow yuo to put a JavaScript command you want called on update and include as many parameters
+ - **:callback_with_values** will allow yuo to put a JavaScript command you want called on update and include as many parameters
  as you'd like.  It will dynamically append a last parameter which is a Hash of two values.  The first is the CSS selector id
  of the Dynaspan block that just performed the action, the second value is the actual text that was entered.  The keys in this
  Hash are **ds_selector** and **ds_input**
