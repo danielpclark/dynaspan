@@ -29,16 +29,18 @@ module Dynaspan
       end
       edit_text = nil unless edit_text.is_a? String
       options = (parameters[-1].is_a?(Hash) ? parameters[-1] : {})
+      options.default = nil
       render(
           partial: "dynaspan/dynaspan_text_#{kind}",
           locals: {
-              master_ds_object: master_ds_object,
-              attr_object: attr_object,
-              attrib: attrib,
-              unique_ref_id: dynaspan_counter,
-              dyna_span_edit_text: edit_text,
-              hidden_fields: options[:hidden_fields],
-              ds_callback_on_update: options[:callback_on_update]
+            master_ds_object: master_ds_object,
+            attr_object: attr_object,
+            attrib: attrib,
+            unique_ref_id: dynaspan_counter,
+            dyna_span_edit_text: edit_text,
+            hidden_fields: options[:hidden_fields],
+            ds_callback_on_update: options[:callback_on_update],
+            ds_callback_with_values: options[:callback_with_values]
           }
       )
     end

@@ -3,6 +3,18 @@
 (function($){
   $.fn.dynaspan = function(){};
 
+  $.fn.dynaspan.appendParameter = function(excmd,append_param){
+    var regExp = [/\(([^)]+)\);?$/,/\(\);?$/];
+    var matches = [regExp[0].exec(excmd), regExp[1].exec(excmd)];
+    if (matches[0]){
+      return(excmd.replace(matches[0][0],'(' + matches[0][1] + ',' + append_param +');'));
+    } else if (matches[1]) {
+      return(excmd.replace(matches[1][0],'(' + append_param + ');'));
+    } else {
+      return excmd.replace(/;$/,'') + '(' + append_param + ');';
+    }
+  };
+
   $.fn.dynaspan.upLast = function(uniq_id_ref){
     $('#dyna_span_field_val_' + uniq_id_ref).val($('#last_dyna_span_val_' + uniq_id_ref).val());
   };
@@ -25,6 +37,14 @@
       ds_block.removeClass("ds-content-present")
     } else {
       ds_block.addClass("ds-content-present")
+    }
+    if (ds_block.data('dsCallbackWithValues')){
+      eval(
+        $.fn.dynaspan.appendParameter(
+          ds_block.data('dsCallbackWithValues'),
+          "{ds_selector:'#dyna_span_block" + uniq_id_ref + "',ds_input:'" + field_val + "'}"
+        )
+      )
     }
     if (ds_block.data('dsCallbackOnUpdate')){
       eval(ds_block.data('dsCallbackOnUpdate'))

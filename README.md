@@ -77,6 +77,22 @@ calling parents with selectors.  Example usage:
 
 ###What's New
 
+####Version 0.1.1
+
+Added a JavaScript callback that will **append** a Hash/Dictionary of the updated Dynaspan Object to the end of your
+functions parameters.  The method is named **callback_with_values**.
+
+    {
+        callback_with_values: "console.log();"
+    }
+    
+This will be called everytime the Dynaspan field submits and it will **inject** the following result **as the last parameter**:
+
+    {
+      ds_selector: "dyna_span_unique_label<#>",
+      ds_input:    "the entered text from the input field"
+    }
+
 ####Version 0.1.0
 
 Added the same hidden_fields from version 0.0.8 to support non-nested Objects.  You can use them now on anything.
