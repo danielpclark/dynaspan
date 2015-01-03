@@ -70,7 +70,7 @@ The options Hash currently has three options.
  - **:hidden_fields** will put in as many hidden fields as you include in a Hash with key->value matching to name->value
  - **:callback_on_update** is a no frills callback.  It runs whatever command you give it whenever Dynaspan submits an update
  to the server
- - **:callback_with_values** will allow yuo to put a JavaScript command you want called on update and include as many parameters
+ - **:callback_with_values** will allow you to put a JavaScript command you want called on update and include as many parameters
  as you'd like.  It will dynamically append a last parameter which is a Hash of two values.  The first is the CSS selector id
  of the Dynaspan block that just performed the action, the second value is the actual text that was entered.  The keys in this
  Hash are **ds_selector** and **ds_input**
