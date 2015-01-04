@@ -60,7 +60,7 @@ For example current_user being an instance of User.
 The **second** parameter can be a symbol of the field you want to update on the main Object from the first parameter.
 
 The **second** field can also be a has_one or has_many subset of the first argument moving the symbol to modify to the **third** argument.
-For example **dynaspan_text_field(author, author.stories, :title)**.  This works as a nested attribute so it include Polymorphic Objects.
+For example **dynaspan_text_field(author, author.stories, :title)**.  This works as a nested attribute so it includes Polymorphic Objects.
 
 The last two parameters can be edit text, and then additional options (in that order).  Both are optional.  The edit text
 is a way to be able to click somewhere to open up the input to initially enter text.
