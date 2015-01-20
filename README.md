@@ -160,7 +160,7 @@ string for id.)  This allows you to create "new" polymorphic child objects with 
 
 The MIT License (MIT)
 
-Copyright (C) 2014 by Daniel P. Clark
+Copyright (C) 2014-2015 by Daniel P. Clark
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
