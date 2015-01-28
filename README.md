@@ -9,11 +9,12 @@ Dynaspan also accepts updating an attribute for a nested object, but only 1 leve
 
 ###Installation
 
- - [ ] Add `gem 'dynaspan'` to your Gemfile.
- - [ ] Run `bundle`.
- - [ ] Next add `include Dynaspan::ApplicationHelper` inside your **ApplicationHelper** module.
- - [ ] Add `//= require dynaspan/dynaspan` to your **application.js** file.
- - [ ] And it's installed!
+ - [ ] Add `gem 'dynaspan'` to your Gemfile
+ - [ ] Run `bundle`
+ - [ ] Next add `include Dynaspan::ApplicationHelper` inside your **ApplicationHelper** module
+ - [ ] Add `//= require dynaspan/dynaspan` to your **application.js** file
+
+And it's installed!
 
 ###Usage
 
@@ -151,7 +152,7 @@ valid options only include:
 ```
 You can add as many hidden fields to your Dynaspan objects as you'd like.
 
->NOTE: In this version hidden fields only apply for nested attributes.
+>NOTE: In this version hidden fields only applies to nested attributes.
 
 Also the id parameter will only be passed to the server if it exists.  (No more empty
 string for id.)  This allows you to create "new" polymorphic child objects with Dynaspan.
