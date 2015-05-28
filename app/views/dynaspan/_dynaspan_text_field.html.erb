@@ -2,7 +2,7 @@
 <div id="dyna_span_block<%= unique_ref_id %>" <%= "data-ds-callback-on-update=\"#{ds_callback_on_update}\" " if ds_callback_on_update.present? %> <%= "data-ds-callback-with-values=\"#{ds_callback_with_values}\" " if ds_callback_with_values.present? %>class='dyna-span<%= ' ds-content-present' if (attr_object.try(attrib).present? || master_ds_object.try(attrib).present?) %>'>
   <%= hidden_field_tag "last_dyna_span_val_#{unique_ref_id}", attr_object.try(attrib) || master_ds_object.try(attrib), id: "last_dyna_span_val_#{unique_ref_id}" %>
   <div id="<%= "dyna_span_div#{unique_ref_id}" %>" style="display:none;">
-    <%= form_for(master_ds_object, method: :patch, remote: true, authenticity_token: true) do |f| %>
+    <%= form_for(master_ds_object, **form_for_options) do |f| %>
       <% if master_ds_object.nested_attributes_options.keys.any? {|i| i.to_s.=~(/#{attr_object.class.try(:model_name).try(:i18n_key).to_s}/) || i.to_s.=~(/#{attr_object.class.try(:table_name)}/) } and !attr_object.nil? %>
         <%= f.fields_for master_ds_object.nested_attributes_options.keys.select {|i| i.to_s.=~(/#{attr_object.class.model_name.i18n_key.to_s}/) || i.to_s.=~(/#{attr_object.class.table_name}/) }.first, attr_object do |a|%>
           <%= a.hidden_field(:id, value: attr_object.id) if attr_object.id.present? %>
