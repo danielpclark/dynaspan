@@ -9,11 +9,12 @@ Dynaspan also accepts updating an attribute for a nested object, but only 1 leve
 
 ###Installation
 
- - [ ] Add `gem 'dynaspan'` to your Gemfile.
- - [ ] Run `bundle`.
- - [ ] Next add `include Dynaspan::ApplicationHelper` inside your **ApplicationHelper** module.
- - [ ] Add `//= require dynaspan/dynaspan` to your **application.js** file.
- - [ ] And it's installed!
+ - [ ] Add `gem 'dynaspan'` to your Gemfile
+ - [ ] Run `bundle`
+ - [ ] Next add `include Dynaspan::ApplicationHelper` inside your **ApplicationHelper** module
+ - [ ] Add `//= require dynaspan/dynaspan` to your **application.js** file
+
+And it's installed!
 
 ###Usage
 
@@ -60,7 +61,7 @@ For example current_user being an instance of User.
 The **second** parameter can be a symbol of the field you want to update on the main Object from the first parameter.
 
 The **second** field can also be a has_one or has_many subset of the first argument moving the symbol to modify to the **third** argument.
-For example **dynaspan_text_field(author, author.stories, :title)**.  This works as a nested attribute so it include Polymorphic Objects.
+For example **dynaspan_text_field(author, author.stories, :title)**.  This works as a nested attribute so it includes Polymorphic Objects.
 
 The last two parameters can be edit text, and then additional options (in that order).  Both are optional.  The edit text
 is a way to be able to click somewhere to open up the input to initially enter text.
@@ -70,7 +71,7 @@ The options Hash currently has three options.
  - **:hidden_fields** will put in as many hidden fields as you include in a Hash with key->value matching to name->value
  - **:callback_on_update** is a no frills callback.  It runs whatever command you give it whenever Dynaspan submits an update
  to the server
- - **:callback_with_values** will allow yuo to put a JavaScript command you want called on update and include as many parameters
+ - **:callback_with_values** will allow you to put a JavaScript command you want called on update and include as many parameters
  as you'd like.  It will dynamically append a last parameter which is a Hash of two values.  The first is the CSS selector id
  of the Dynaspan block that just performed the action, the second value is the actual text that was entered.  The keys in this
  Hash are **ds_selector** and **ds_input**
@@ -151,7 +152,7 @@ valid options only include:
 ```
 You can add as many hidden fields to your Dynaspan objects as you'd like.
 
->NOTE: In this version hidden fields only apply for nested attributes.
+>NOTE: In this version hidden fields only applies to nested attributes.
 
 Also the id parameter will only be passed to the server if it exists.  (No more empty
 string for id.)  This allows you to create "new" polymorphic child objects with Dynaspan.
@@ -160,7 +161,7 @@ string for id.)  This allows you to create "new" polymorphic child objects with 
 
 The MIT License (MIT)
 
-Copyright (C) 2014 by Daniel P. Clark
+Copyright (C) 2014-2015 by Daniel P. Clark
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
