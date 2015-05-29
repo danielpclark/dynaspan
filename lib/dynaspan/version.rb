@@ -1,3 +1,3 @@
 module Dynaspan
-  VERSION = '0.1.2.beta1'
+  VERSION = '0.1.2'
 end

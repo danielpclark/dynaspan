@@ -66,7 +66,7 @@ For example **dynaspan_text_field(author, author.stories, :title)**.  This works
 The last two parameters can be edit text, and then additional options (in that order).  Both are optional.  The edit text
 is a way to be able to click somewhere to open up the input to initially enter text.
 
-The options Hash currently has three options.
+The options Hash currently has these options.
 
  - **:hidden_fields** will put in as many hidden fields as you include in a Hash with key->value matching to name->value
  - **:callback_on_update** is a no frills callback.  It runs whatever command you give it whenever Dynaspan submits an update
@@ -75,11 +75,19 @@ The options Hash currently has three options.
  as you'd like.  It will dynamically append a last parameter which is a Hash of two values.  The first is the CSS selector id
  of the Dynaspan block that just performed the action, the second value is the actual text that was entered.  The keys in this
  Hash are **ds_selector** and **ds_input**
-
+ - **:unique_id** allows custom ID labelling which is ideal for JavaScript generated usage.
+ - **:form_for** allows adding or over-writing any form_for parameter (besides the object being written to). This takes a Hash
+ of parameters just like you would give in a view for your form_for form.  If you have a namespaced object to update use
+ the **url:** option in the hash for the path to use in updating your object.
 
 ###How it updates
 
-The AJAX call will call the update method on your first Object parameter via PATCH.  The optional nested attribute and the symbol for the field are all part of the main Object being updated.  There is no expected AJAX reply.  It's a silent set it and forget it method.  If you don't have your update method configured with a `.js` response then it will successfully perform the update on the object, and then send a complaint about a response but no one will notice (unless maybe you look at the server logs).  In other words the client experience is only good, and the server won't hiccup over it.
+The AJAX call will call the update method on your first Object parameter via PATCH.  The optional nested attribute
+and the symbol for the field are all part of the main Object being updated.  There is no expected AJAX reply.  It's
+a silent set it and forget it method.  If you don't have your update method configured with a `.js` response then it
+will successfully perform the update on the object, and then send a complaint about a response but no one will notice
+(unless maybe you look at the server logs).  In other words the client experience is only good, and the server
+won't hiccup over it.
 
 ###It's too easy!
 
@@ -111,6 +119,13 @@ calling parents with selectors.  Example usage:
 ```
 
 ###What's New
+
+####Version 0.1.2
+
+Added **unique_id** parameter to the options Hash allowing custom ID labelling which is ideal for JavaScript generated usage.
+
+Added **form_for** parameter to allow adding or over-writing any form_for parameter (besides the object being written to).
+If you have a namespaced object to update use the **url:** option in the hash for the path to use in updating your object.
 
 ####Version 0.1.1
 
