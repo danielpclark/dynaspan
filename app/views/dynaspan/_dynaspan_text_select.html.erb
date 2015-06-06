@@ -1,4 +1,4 @@
-<%# This is used through the helper method dynaspan_text_area %>
+<%# This is used through the helper method dynaspan_text_field %>
 <div id="dyna_span_block<%= unique_ref_id %>" <%= "data-ds-callback-on-update=\"#{ds_callback_on_update}\" " if ds_callback_on_update.present? %> <%= "data-ds-callback-with-values=\"#{ds_callback_with_values}\" " if ds_callback_with_values.present? %>class='dyna-span<%= ' ds-content-present' if (attr_object.try(attrib).present? || master_ds_object.try(attrib).present?) %>'>
   <%= hidden_field_tag "last_dyna_span_val_#{unique_ref_id}", attr_object.try(attrib) || master_ds_object.try(attrib), id: "last_dyna_span_val_#{unique_ref_id}" %>
   <div id="<%= "dyna_span_div#{unique_ref_id}" %>" style="display:none;">
@@ -9,10 +9,10 @@
           <% hidden_fields.each do |hkey, hval| %>
             <%= a.hidden_field hkey.to_sym, value: hval %>
           <% end if hidden_fields %>
-          <%= a.text_area attrib, id: "dyna_span_field_val_#{unique_ref_id}", onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');", **html_options %>
+          <%= a.select( attrib, schoices, soptions, {**html_options, id: "dyna_span_field_val_#{unique_ref_id}", onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');"}, &block) %>
         <% end %>
       <% else %>
-        <%= f.text_area attrib, id: "dyna_span_field_val_#{unique_ref_id}", onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');", **html_options %>
+        <%=   f.select( attrib, schoices, soptions, {**html_options, id: "dyna_span_field_val_#{unique_ref_id}", onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');"}, &block) %>
         <% hidden_fields.each do |hkey, hval| %>
           <%= f.hidden_field hkey.to_sym, value: hval %>
         <% end if hidden_fields %>

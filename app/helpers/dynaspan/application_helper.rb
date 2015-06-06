@@ -9,13 +9,17 @@ module Dynaspan
       dynaspan_text('area', master_ds_object, parameters)
     end
 
+    def dynaspan_select(master_ds_object,*parameters, &block)
+      dynaspan_text('select', master_ds_object, parameters, &block)
+    end
+
     private
 
     def dynaspan_counter
       @count_for_viewspace = @count_for_viewspace.to_i + 1
     end
 
-    def dynaspan_text(kind, master_ds_object,*parameters)
+    def dynaspan_text(kind, master_ds_object,*parameters, &block)
       parameters.flatten!
       if parameters.first.is_a? Symbol
         attr_object = nil
@@ -36,6 +40,9 @@ module Dynaspan
         remote: true,
         authenticity_token: true
       )
+      options[:html_options] = ActiveSupport::HashWithIndifferentAccess.new(options[:html_options])
+      options[:html_options][:class] = "dyna-span form-control dyna-span-input #{options[:html_options][:class]}"
+      options[:html_options].delete_if {|k,v| [:id, :onblur,:onfocus].include? k}
       render(
           partial: "dynaspan/dynaspan_text_#{kind}",
           locals: {
@@ -47,7 +54,11 @@ module Dynaspan
             hidden_fields: options[:hidden_fields],
             ds_callback_on_update: options[:callback_on_update],
             ds_callback_with_values: options[:callback_with_values],
-            form_for_options: options[:form_for]
+            form_for_options: options[:form_for],
+            schoices: options[:choices],          # For form 'select' field
+            soptions: options[:options],          # For form 'select' field
+            html_options: options[:html_options],
+            block: block
           }
       )
     end
