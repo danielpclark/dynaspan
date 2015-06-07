@@ -50,14 +50,14 @@ module Dynaspan
             master_ds_object: master_ds_object,
             attr_object: attr_object,
             attrib: attrib,
-            unique_ref_id: options.fetch(:unique_id) { [to_id(master_ds_object), to_id(attr_object), attrib].join },
+            unique_ref_id: options.fetch(:unique_id) { [to_id(master_ds_object), to_id(attr_object), attrib, SecureRandom.hex(3)].join },
             dyna_span_edit_text: edit_text,
             hidden_fields: options[:hidden_fields],
             ds_callback_on_update: options[:callback_on_update],
             ds_callback_with_values: options[:callback_with_values],
             form_for_options: options[:form_for],
-            schoices: options[:choices],          # For form 'select' field
-            soptions: options.fetch(:options) { Hash.new },          # For form 'select' field
+            choices: options[:choices],                    # For form 'select' field
+            options: options.fetch(:options) { Hash.new }, # For form 'select' field
             html_options: options[:html_options],
             block: block
           }
