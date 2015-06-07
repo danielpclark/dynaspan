@@ -56,7 +56,7 @@ module Dynaspan
             ds_callback_with_values: options[:callback_with_values],
             form_for_options: options[:form_for],
             schoices: options[:choices],          # For form 'select' field
-            soptions: options[:options],          # For form 'select' field
+            soptions: options.fetch(:options) { Hash.new },          # For form 'select' field
             html_options: options[:html_options],
             block: block
           }
