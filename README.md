@@ -1,4 +1,4 @@
-##Dynaspan
+##Dynaspan - The magic AJAX just happens!
 [![Gem Version](https://badge.fury.io/rb/dynaspan.svg)](http://badge.fury.io/rb/dynaspan)
 [![Code Climate](https://codeclimate.com/github/danielpclark/dynaspan/badges/gpa.svg)](https://codeclimate.com/github/danielpclark/dynaspan)
 #####[JSFiddle Demo](http://jsfiddle.net/680v09y8/)
