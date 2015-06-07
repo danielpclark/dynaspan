@@ -42,7 +42,7 @@ module Dynaspan
       )
       options[:html_options] = ActiveSupport::HashWithIndifferentAccess.new(options[:html_options])
       options[:html_options][:class] = "dyna-span form-control dyna-span-input #{options[:html_options][:class]}"
-      options[:html_options].delete_if {|k,v| [:id, :onblur,:onfocus].include? k}
+      options[:html_options].delete_if {|k,v| [:id, :onblur, :onfocus].include? k}
       render(
           partial: "dynaspan/dynaspan_text_#{kind}",
           locals: {

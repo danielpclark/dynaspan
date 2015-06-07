@@ -9,10 +9,10 @@
           <% hidden_fields.each do |hkey, hval| %>
             <%= a.hidden_field hkey.to_sym, value: hval %>
           <% end if hidden_fields %>
-          <%= a.text_field attrib, id: "dyna_span_field_val_#{unique_ref_id}", onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');", **html_options %>
+          <%= a.text_field attrib, id: "dyna_span_field_val_#{unique_ref_id}", onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');", **html_options.symbolize_keys %>
         <% end %>
       <% else %>
-        <%= f.text_field attrib, id: "dyna_span_field_val_#{unique_ref_id}", onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');", **html_options %>
+        <%= f.text_field attrib, id: "dyna_span_field_val_#{unique_ref_id}", onfocus: "$().dynaspan.upLast('#{unique_ref_id}');", onblur: "$().dynaspan.upHide('#{unique_ref_id}');", **html_options.symbolize_keys %>
         <% hidden_fields.each do |hkey, hval| %>
           <%= f.hidden_field hkey.to_sym, value: hval %>
         <% end if hidden_fields %>
