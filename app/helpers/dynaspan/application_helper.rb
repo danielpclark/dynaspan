@@ -14,9 +14,10 @@ module Dynaspan
     end
 
     private
+    module_function
 
-    def dynaspan_counter
-      @count_for_viewspace = @count_for_viewspace.to_i + 1
+    def to_id(obj)
+      !!obj ? "#{obj.class.name}#{obj.try(:id)}" : ""
     end
 
     def dynaspan_text(kind, master_ds_object,*parameters, &block)
@@ -49,7 +50,7 @@ module Dynaspan
             master_ds_object: master_ds_object,
             attr_object: attr_object,
             attrib: attrib,
-            unique_ref_id: options.fetch(:unique_id) { dynaspan_counter },
+            unique_ref_id: options.fetch(:unique_id) { [to_id(master_ds_object), to_id(attr_object), attrib].join },
             dyna_span_edit_text: edit_text,
             hidden_fields: options[:hidden_fields],
             ds_callback_on_update: options[:callback_on_update],
