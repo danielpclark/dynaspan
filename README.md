@@ -1,4 +1,4 @@
-##Dynaspan
+##Dynaspan - The magic AJAX just happens!
 [![Gem Version](https://badge.fury.io/rb/dynaspan.svg)](http://badge.fury.io/rb/dynaspan)
 [![Code Climate](https://codeclimate.com/github/danielpclark/dynaspan/badges/gpa.svg)](https://codeclimate.com/github/danielpclark/dynaspan)
 #####[JSFiddle Demo](http://jsfiddle.net/680v09y8/)
@@ -46,6 +46,7 @@ You can use either `dynaspan_text_field` or `dynaspan_text_area` in any of your 
 ```ruby
 dynaspan_text_field(Object,OptionalNestedObject,SymField,OptionalEditText,OptionalOptionsHash)
 dynaspan_text_area(Object,OptionalNestedObject,SymField,OptionalEditText,OptionalOptionsHash)
+dynaspan_select(Object,OptionalNestedObject,SymField,OptionalEditText,OptionsHash)
 ```
 The order is important.  And yes it does NOT change even if you just do:
 ```ruby
@@ -69,16 +70,14 @@ is a way to be able to click somewhere to open up the input to initially enter t
 The options Hash currently has these options.
 
  - **:hidden_fields** will put in as many hidden fields as you include in a Hash with key->value matching to name->value
- - **:callback_on_update** is a no frills callback.  It runs whatever command you give it whenever Dynaspan submits an update
- to the server
- - **:callback_with_values** will allow you to put a JavaScript command you want called on update and include as many parameters
- as you'd like.  It will dynamically append a last parameter which is a Hash of two values.  The first is the CSS selector id
- of the Dynaspan block that just performed the action, the second value is the actual text that was entered.  The keys in this
- Hash are **ds_selector** and **ds_input**
- - **:unique_id** allows custom ID labelling which is ideal for JavaScript generated usage.
- - **:form_for** allows adding or over-writing any form_for parameter (besides the object being written to). This takes a Hash
- of parameters just like you would give in a view for your form_for form.  If you have a namespaced object to update use
- the **url:** option in the hash for the path to use in updating your object.
+ - **:callback_on_update** is a no frills callback.  It runs whatever command you give it whenever Dynaspan submits an update to the server
+ - **:callback_with_values** will allow you to put a JavaScript command you want called on update and include as many parameters as you'd like.  It will dynamically append a last parameter which is a Hash of two values.  The first is the CSS selector id of the Dynaspan block that just performed the action, the second value is the actual text that was entered.  The keys in this Hash are **ds_selector** and **ds_input**
+ - **:unique_id** allows custom ID labelling.  This is no longer recommended to be used as the in-built method is thorough in its uniqeness.
+ - **:form_for** allows adding or over-writing any form_for parameter (besides the object being written to). This takes a Hash of parameters just like you would give in a view for your form_for form.  If you have a namespaced object to update use the **url:** option in the hash for the path to use in updating your object.
+ - **:html_options** add your own html options to the input field.  Includes ability to add additional classes with `html_options: {class: "example"}`.  **:id**, **:onfocus**, and **:onblur** are reserved.
+ - **:choices** used for **dynaspan_select** for the choices of the select box.
+ - **:options** used for **dynaspan_select** for the options of the select box; such as **:disabled**, **:prompt**, or **:include_blank**.
+ - **&block** used only with **dynaspan_select** for passing a block to Rails' form select method.
 
 ###How it updates
 
@@ -119,6 +118,19 @@ calling parents with selectors.  Example usage:
 ```
 
 ###What's New
+
+####Version 0.1.3
+
+Changed **:unique_id** to work based on the object being rendered and some additional random characters in case the same object will be used more than once.
+
+Added **:html_options** add your own html options to the input field.  Includes ability to add additional classes with `html_options: {class: "example"}`.  **:id**, **:onfocus**, and **:onblur** are reserved.
+
+Added **dynaspan_select** for having a select box dynamically appear.
+ - Added **:choices** used for **dynaspan_select** for the choices of the select box.
+ - Added **:options** used for **dynaspan_select** for the options of the select box; such as **:disabled**, **:prompt**, or **:include_blank**.
+ - Added **&block** used only with **dynaspan_select** for passing a block to Rails' form select method.
+
+
 
 ####Version 0.1.2
 
