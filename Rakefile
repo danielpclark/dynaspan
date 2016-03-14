@@ -1,6 +1,6 @@
 #!/usr/bin/env rake
 require 'bundler/gem_tasks'
-require File.expand_path('../lib/dynaspan/source_file', __FILE__)
+#require File.expand_path('../lib/dynaspan/source_file', __FILE__)
 
 desc 'Update Dynaspan Library, VERSION is required.'
 task 'update_dynaspan' do
