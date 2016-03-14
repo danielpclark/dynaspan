@@ -29,6 +29,9 @@
     var field_val = $('#dyna_span_field_val_' + uniq_id_ref).val();
     $('#dyna_span_div' + uniq_id_ref + ' > form').trigger('submit.rails');
     $('#last_dyna_span_val_' + uniq_id_ref).val(field_val);
+    $('select#dyna_span_field_val_' + uniq_id_ref).each(function(){
+      field_val = $(this).children("option:selected").text()
+    });
     $('#dyna_span_span' + uniq_id_ref).show().html(field_val);
     $('#dyna_span_div' + uniq_id_ref).hide();
     var ds_block = $("#dyna_span_block" + uniq_id_ref);
