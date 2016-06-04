@@ -119,6 +119,11 @@ calling parents with selectors.  Example usage:
 
 ###What's New
 
+
+####Version 0.1.4 & 0.1.5
+
+Use display name rather than value from option.  And enum behavior may be prone to change so added safeguard scenario.
+
 ####Version 0.1.3
 
 Changed **:unique_id** to work based on the object being rendered and some additional random characters in case the same object will be used more than once.
@@ -188,7 +193,7 @@ string for id.)  This allows you to create "new" polymorphic child objects with 
 
 The MIT License (MIT)
 
-Copyright (C) 2014-2015 by Daniel P. Clark
+Copyright (C) 2014-2016 by Daniel P. Clark
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

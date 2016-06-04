@@ -20,7 +20,7 @@
     <% end %>
   </div>
   <% current_value = attr_object.try(attrib) || master_ds_object.try(attrib) %>
-  <% display_text = choices.match(/value="#{current_value}".*>(.+)</)[1] %>
+  <% display_text = begin choices.match(/value="#{current_value}".*>(.+)</)[1] rescue nil end %>
   <%= content_tag 'span', display_text || current_value, id: "dyna_span_span#{unique_ref_id}", onclick: "$().dynaspan.upShow('#{unique_ref_id}');", class: 'dyna-span dyna-span-text', style: 'display:block;' %>
   <%= content_tag('div', dyna_span_edit_text, class: 'dyna-span-edit-text pull-right', onclick: "$().dynaspan.upShow('#{unique_ref_id}');", style: 'cursor:pointer;')  %>
 </div>
