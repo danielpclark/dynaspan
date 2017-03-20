@@ -1,13 +1,13 @@
-##Dynaspan - The magic AJAX just happens!
+## Dynaspan - The magic AJAX just happens!
 [![Gem Version](https://badge.fury.io/rb/dynaspan.svg)](http://badge.fury.io/rb/dynaspan)
 [![Code Climate](https://codeclimate.com/github/danielpclark/dynaspan/badges/gpa.svg)](https://codeclimate.com/github/danielpclark/dynaspan)
-#####[JSFiddle Demo](http://jsfiddle.net/680v09y8/)
+##### [JSFiddle Demo](http://jsfiddle.net/680v09y8/)
 
 Dynaspan is an AJAX tool for Rails to update one field of any object without interfering with your website experience.  The user will see the web page as normal text.  Where ever you've placed a Dynaspan field people can click on the text and it transforms into text entry.  As soon as the person moves away from that entry it sends the update to the server.
 
 Dynaspan also accepts updating an attribute for a nested object, but only 1 level deep.
 
-###Installation
+### Installation
 
  - [ ] Add `gem 'dynaspan'` to your Gemfile
  - [ ] Run `bundle`
@@ -16,7 +16,7 @@ Dynaspan also accepts updating an attribute for a nested object, but only 1 leve
 
 And it's installed!
 
-###Usage
+### Usage
 
 Simple example:
 ```ruby
@@ -54,7 +54,7 @@ dynaspan_text_field(Object,SymField)
 ```
 It is unconventional but the order remains the same despite the optional fields.
 
-###Parameters
+### Parameters
 
 The **first** parameter will always be the Object that will have its update method called.  It must be an instance of the Object.
 For example current_user being an instance of User.
@@ -79,7 +79,7 @@ The options Hash currently has these options.
  - **:options** used for **dynaspan_select** for the options of the select box; such as **:disabled**, **:prompt**, or **:include_blank**.
  - **&block** used only with **dynaspan_select** for passing a block to Rails' form select method.
 
-###How it updates
+### How it updates
 
 The AJAX call will call the update method on your first Object parameter via PATCH.  The optional nested attribute
 and the symbol for the field are all part of the main Object being updated.  There is no expected AJAX reply.  It's
@@ -88,13 +88,13 @@ will successfully perform the update on the object, and then send a complaint ab
 (unless maybe you look at the server logs).  In other words the client experience is only good, and the server
 won't hiccup over it.
 
-###It's too easy!
+### It's too easy!
 
 **You're welcome!**
 
 -- Daniel P. Clark
 
-###Styles
+### Styles
 
 As of version 0.0.6 a class will be dynamically added/removed to a div tag containing the class "dyna-span".
 That class is "ds-content-present".  The purpose of this class is to allow CSS content styles depending on
@@ -117,14 +117,14 @@ calling parents with selectors.  Example usage:
 }
 ```
 
-###What's New
+### What's New
 
 
-####Version 0.1.4 & 0.1.5
+#### Version 0.1.4 & 0.1.5
 
 Use display name rather than value from option.  And enum behavior may be prone to change so added safeguard scenario.
 
-####Version 0.1.3
+#### Version 0.1.3
 
 Changed **:unique_id** to work based on the object being rendered and some additional random characters in case the same object will be used more than once.
 
@@ -137,14 +137,14 @@ Added **dynaspan_select** for having a select box dynamically appear.
 
 
 
-####Version 0.1.2
+#### Version 0.1.2
 
 Added **unique_id** parameter to the options Hash allowing custom ID labelling which is ideal for JavaScript generated usage.
 
 Added **form_for** parameter to allow adding or over-writing any form_for parameter (besides the object being written to).
 If you have a namespaced object to update use the **url:** option in the hash for the path to use in updating your object.
 
-####Version 0.1.1
+#### Version 0.1.1
 
 Added a JavaScript callback that will **append** a Hash/Dictionary of the updated Dynaspan Object to the end of your
 functions parameters.  The method is named **callback_with_values**.
@@ -160,11 +160,11 @@ This will be called everytime the Dynaspan field submits and it will **inject** 
   ds_input:    "the entered text from the input field"
 }
 ```
-####Version 0.1.0
+#### Version 0.1.0
 
 Added the same hidden_fields from version 0.0.8 to support non-nested Objects.  You can use them now on anything.
 
-####Version 0.0.9
+#### Version 0.0.9
 
 JavaScript callback option now available.  Whenever the Dynaspan field is submitted you can have Dynaspan call
 your own JavaScript method.
@@ -173,7 +173,7 @@ your own JavaScript method.
   callback_on_update: "someMethod('some-relative-instance-value');"
 }
 ```
-####Version 0.0.8
+#### Version 0.0.8
 
 You can now provide an option hash as a last parameter.  Current
 valid options only include:
@@ -189,7 +189,7 @@ You can add as many hidden fields to your Dynaspan objects as you'd like.
 Also the id parameter will only be passed to the server if it exists.  (No more empty
 string for id.)  This allows you to create "new" polymorphic child objects with Dynaspan.
 
-###License
+### License
 
 The MIT License (MIT)
 
