@@ -14,6 +14,12 @@ over AJAX, and the field turns back into plain text.
 <%= dynaspan_text_field(@user, :name) %>
 ```
 
+![Dynaspan demo: clicking text turns it into an input; clicking away saves it and turns it back into text](docs/images/dynaspan-demo.gif)
+
+| Before: plain text on the page | After a click: an input, ready to type |
+| --- | --- |
+| ![A profile card showing plain text values](docs/images/dynaspan-text.png) | ![The same card with the title turned into a text field](docs/images/dynaspan-editing.png) |
+
 - Text fields, text areas and selects
 - Nested attributes (`accepts_nested_attributes_for`), one level deep
 - No jQuery, rails-ujs or Turbo required, but it works alongside all three
@@ -277,6 +283,16 @@ bin/demo                               # the demo app at http://localhost:3000
 
 The browser tests use [Cuprite](https://github.com/rubycdp/cuprite). Set
 `BROWSER_PATH` if Chrome isn't found automatically.
+
+The demo GIF and screenshots above are recorded from `bin/demo` with
+[Playwright](https://playwright.dev) and assembled with
+[Pillow](https://python-pillow.org):
+
+```sh
+PORT=3999 bin/demo &
+node script/demo/record.js        # captures frames and the screenshots
+python3 script/demo/build_gif.py  # writes docs/images/dynaspan-demo.gif
+```
 
 ## License
 

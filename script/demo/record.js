@@ -12,7 +12,7 @@ const { chromium } = require('playwright');
 const BASE_URL = process.env.DEMO_URL || `http://localhost:${process.env.PORT || 3999}/`;
 const FRAMES = path.join(__dirname, 'frames');
 const STILLS = path.join(__dirname, '..', '..', 'docs', 'images');
-const VIEWPORT = { width: 760, height: 500 };
+const VIEWPORT = { width: 760, height: 520 };
 
 const OVERLAY = `
   #demo-cursor { position: fixed; left: 0; top: 0; z-index: 10000; pointer-events: none;
