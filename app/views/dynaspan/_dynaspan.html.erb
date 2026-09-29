@@ -1,0 +1,32 @@
+<%# Rendered by dynaspan_text_field, dynaspan_text_area and dynaspan_select. %>
+<%= tag.div id: "dyna_span_block#{unique_ref_id}",
+            class: ['dyna-span', ('ds-content-present' if value.present?)],
+            data: {
+              dynaspan: unique_ref_id,
+              dynaspan_kind: kind,
+              ds_callback_on_update: ds_callback_on_update.presence,
+              ds_callback_with_values: ds_callback_with_values.presence
+            } do %>
+  <%= tag.input type: 'hidden', id: "last_dyna_span_val_#{unique_ref_id}", value: value, autocomplete: 'off' %>
+  <%= tag.div id: "dyna_span_div#{unique_ref_id}", class: 'dyna-span-form', style: 'display:none;' do %>
+    <%= form_for(master_ds_object, **form_for_options) do |f| %>
+      <% if association %>
+        <%= f.fields_for association[:name], (association[:collection] ? [attr_object] : attr_object) do |nested| %>
+          <%= dynaspan_input(nested, kind, attrib, local_assigns) %>
+          <% hidden_fields.each do |name, hidden_value| %>
+            <%= nested.hidden_field name, value: hidden_value %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <%= dynaspan_input(f, kind, attrib, local_assigns) %>
+        <% hidden_fields.each do |name, hidden_value| %>
+          <%= f.hidden_field name, value: hidden_value %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= tag.span display_text, id: "dyna_span_span#{unique_ref_id}", class: 'dyna-span dyna-span-text', style: 'display:block;', tabindex: 0 %>
+  <% if dyna_span_edit_text %>
+    <%= tag.div dyna_span_edit_text, class: 'dyna-span-edit-text pull-right', style: 'cursor:pointer;' %>
+  <% end %>
+<% end %>

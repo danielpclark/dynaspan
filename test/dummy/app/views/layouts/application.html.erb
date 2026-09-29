@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dynaspan demo</title>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag 'dynaspan/dynaspan' %>
+    <%= stylesheet_link_tag 'demo' %>
+    <%= javascript_include_tag 'dynaspan/dynaspan' %>
+  </head>
+  <body>
+    <%= yield %>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script>
+      (function () {
+        var toast = document.getElementById('toast');
+        var timer;
+        function flash(message, error) {
+          toast.textContent = message;
+          toast.classList.toggle('toast-error', !!error);
+          toast.classList.add('toast-visible');
+          clearTimeout(timer);
+          timer = setTimeout(function () { toast.classList.remove('toast-visible'); }, 1600);
+        }
+        document.addEventListener('dynaspan:success', function () { flash('✓ Saved'); });
+        document.addEventListener('dynaspan:error', function () { flash('Could not save', true); });
+      })();
+    </script>
+  </body>
+</html>

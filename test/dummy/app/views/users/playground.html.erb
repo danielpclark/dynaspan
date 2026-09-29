@@ -1,0 +1,19 @@
+<main class="card">
+  <%= dynaspan_text_field(@user, :name, '[edit name]', unique_id: 'callbacks',
+                          callback_with_values: "recordValues('with');",
+                          callback_on_update: "recordUpdate();") %>
+  <%= dynaspan_text_field(@user, :title, '[edit title]', unique_id: 'blank',
+                          form_for: { url: '/missing' }) %>
+  <p class="hint">Somewhere else to click.</p>
+  <ol id="log"></ol>
+</main>
+<script>
+  function log(text) {
+    var item = document.createElement('li');
+    item.textContent = text;
+    document.getElementById('log').appendChild(item);
+  }
+  function recordValues(label, values) { log(label + ' ' + values.ds_selector + ' ' + values.ds_input); }
+  function recordUpdate() { log('updated'); }
+  document.addEventListener('dynaspan:update', function (event) { log('event ' + event.detail.value); });
+</script>
