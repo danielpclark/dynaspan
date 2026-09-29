@@ -1,0 +1,22 @@
+<main class="card">
+  <header class="card-header">
+    <div class="avatar" aria-hidden="true"><%= @user.name.to_s.first %></div>
+    <div class="headline">
+      <div class="field field-name"><%= dynaspan_text_field(@user, :name, unique_id: 'name') %></div>
+      <div class="field field-title"><%= dynaspan_text_field(@user, :title, unique_id: 'title') %></div>
+    </div>
+  </header>
+
+  <dl class="details">
+    <dt>Role</dt>
+    <dd><%= dynaspan_select(@user, :role, unique_id: 'role', choices: User::ROLES) %></dd>
+
+    <dt>Website</dt>
+    <dd><%= dynaspan_text_field(@user, @user.websites.first, :url, unique_id: 'website') %></dd>
+
+    <dt>Bio</dt>
+    <dd><%= dynaspan_text_area(@user, :bio, unique_id: 'bio', html_options: { rows: 3 }) %></dd>
+  </dl>
+
+  <p class="hint">Click any value to edit it. Press Enter or click away to save, Escape to cancel.</p>
+</main>

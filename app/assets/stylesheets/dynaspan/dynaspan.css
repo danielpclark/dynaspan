@@ -1,0 +1,44 @@
+/*
+ * Dynaspan default styles (optional).
+ * Load with stylesheet_link_tag "dynaspan/dynaspan", require it from your
+ * Sprockets manifest, or write your own.
+ */
+.dyna-span .dyna-span-text {
+  cursor: text;
+  min-height: 1.5em;
+  border-radius: 4px;
+  outline-offset: 2px;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.dyna-span .dyna-span-text:hover,
+.dyna-span .dyna-span-text:focus-visible {
+  background-color: rgba(59, 130, 246, 0.08);
+  box-shadow: inset 0 -1px 0 rgba(59, 130, 246, 0.6);
+}
+
+.dyna-span[data-dynaspan-kind="text_area"] .dyna-span-text {
+  white-space: pre-wrap;
+}
+
+.dyna-span .dyna-span-input {
+  box-sizing: border-box;
+  width: 100%;
+  font: inherit;
+}
+
+.dyna-span .dyna-span-edit-text {
+  cursor: pointer;
+}
+
+.dyna-span.ds-dialog-open > .dyna-span-edit-text {
+  display: none;
+}
+
+.dyna-span.ds-saving .dyna-span-text {
+  opacity: 0.6;
+}
+
+.dyna-span.ds-error .dyna-span-text {
+  box-shadow: inset 0 -2px 0 #dc2626;
+}

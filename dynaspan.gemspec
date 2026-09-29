@@ -1,20 +1,31 @@
-# -*- encoding: utf-8 -*-
-require File.expand_path('../lib/dynaspan/version', __FILE__)
+# frozen_string_literal: true
 
-Gem::Specification.new do |gem|
-  gem.authors       = ['Daniel P. Clark']
-  gem.email         = ['6ftdan@gmail.com']
-  gem.description   = %q{In place text editing with AJAX substituting text to input field.}
-  gem.summary       = %q{Text to AJAX editing in place.}
-  gem.homepage      = 'https://github.com/danielpclark/dynaspan'
-  gem.licenses      = ['MIT']
-  gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  gem.files         = `git ls-files`.split("\n")
-  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  gem.name          = 'dynaspan'
-  gem.require_paths = ['lib']
-  gem.required_ruby_version = '>= 2.0'
-  gem.version       = Dynaspan::VERSION
-  gem.requirements << "jQuery"
-  gem.requirements << "Rails"
+require_relative 'lib/dynaspan/version'
+
+Gem::Specification.new do |spec|
+  spec.name        = 'dynaspan'
+  spec.version     = Dynaspan::VERSION
+  spec.authors     = ['Daniel P. Clark']
+  spec.email       = ['6ftdan@gmail.com']
+  spec.summary     = 'Click-to-edit, in-place AJAX text editing for Rails.'
+  spec.description = 'Dynaspan renders plain text that turns into a text field, text area or select when clicked, ' \
+                     'and saves the change over AJAX when the field loses focus. No jQuery required.'
+  spec.homepage    = 'https://github.com/danielpclark/dynaspan'
+  spec.license     = 'MIT'
+
+  spec.required_ruby_version = '>= 3.1'
+
+  spec.metadata = {
+    'source_code_uri' => spec.homepage,
+    'changelog_uri' => "#{spec.homepage}/blob/master/CHANGELOG.md",
+    'bug_tracker_uri' => "#{spec.homepage}/issues",
+    'rubygems_mfa_required' => 'true'
+  }
+
+  spec.files = Dir['{app,config,lib}/**/*', 'CHANGELOG.md', 'LICENSE', 'README.md']
+  spec.require_paths = ['lib']
+
+  spec.add_dependency 'actionpack', '>= 7.1', '< 9'
+  spec.add_dependency 'actionview', '>= 7.1', '< 9'
+  spec.add_dependency 'railties', '>= 7.1', '< 9'
 end

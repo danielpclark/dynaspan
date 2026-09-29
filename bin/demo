@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Runs the demo application used for the README screenshots.
+#
+#   bin/demo            # http://localhost:3000
+#   PORT=4000 bin/demo
+require 'bundler/setup'
+require 'puma/cli'
+
+Dir.chdir(File.expand_path('../test/dummy', __dir__))
+Puma::CLI.new(['--port', ENV.fetch('PORT', '3000'), '--threads', '1:5', 'config.ru']).run

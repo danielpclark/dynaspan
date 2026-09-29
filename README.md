@@ -1,215 +1,300 @@
-## Dynaspan
-[![Gem Version](https://badge.fury.io/rb/dynaspan.svg)](http://badge.fury.io/rb/dynaspan)
-[![Code Climate](https://codeclimate.com/github/danielpclark/dynaspan/badges/gpa.svg)](https://codeclimate.com/github/danielpclark/dynaspan)
-##### [JSFiddle Demo](http://jsfiddle.net/680v09y8/)
+# Dynaspan
 
-Dynaspan is an AJAX tool for Rails to update one field of any object without interfering with your website experience.  The user will see the web page as normal text.  Where ever you've placed a Dynaspan field people can click on the text and it transforms into text entry.  As soon as the person moves away from that entry it sends the update to the server.
+[![Gem Version](https://badge.fury.io/rb/dynaspan.svg)](https://rubygems.org/gems/dynaspan)
+[![CI](https://github.com/danielpclark/dynaspan/actions/workflows/ci.yml/badge.svg)](https://github.com/danielpclark/dynaspan/actions/workflows/ci.yml)
 
-Dynaspan also accepts updating an attribute for a nested object, but only 1 level deep.
+**Click-to-edit, in-place AJAX editing for Rails.**
 
-### Installation
+Dynaspan shows a record's attribute as ordinary text on your page. Click the
+text and it turns into a text field, text area or select. Click away (or press
+<kbd>Enter</kbd>) and the change is sent to your controller's `update` action
+over AJAX, and the field turns back into plain text.
 
- - [ ] Add `gem 'dynaspan'` to your Gemfile
- - [ ] Run `bundle`
- - [ ] Next add `include Dynaspan::ApplicationHelper` inside your **ApplicationHelper** module
- - [ ] Add `//= require dynaspan/dynaspan` to your **application.js** file
-
-And it's installed!
-
-### Usage
-
-Simple example:
-```ruby
-dynaspan_text_field(user, :name)
+```erb
+<%= dynaspan_text_field(@user, :name) %>
 ```
-And that's it.  As long as you have a User object with a name field, this will update through
-the UserController's update method.  **user** is an User Object instance eg: `user = User.first`.
 
----
+![Dynaspan demo: clicking text turns it into an input; clicking away saves it and turns it back into text](docs/images/dynaspan-demo.gif)
 
-Polymorphic/Nested Example #1:
+| Before: plain text on the page | After a click: an input, ready to type |
+| --- | --- |
+| ![A profile card showing plain text values](docs/images/dynaspan-text.png) | ![The same card with the title turned into a text field](docs/images/dynaspan-editing.png) |
+
+- Text fields, text areas and selects
+- Nested attributes (`accepts_nested_attributes_for`), one level deep
+- No jQuery, rails-ujs or Turbo required, but it works alongside all three
+- Works with importmap-rails, Propshaft and Sprockets
+- Keyboard accessible: <kbd>Tab</kbd> to the text, <kbd>Enter</kbd> to edit,
+  <kbd>Enter</kbd> to save, <kbd>Esc</kbd> to cancel
+- DOM events and CSS state classes for styling and custom behaviour
+
+## Requirements
+
+- Ruby 3.1+
+- Rails 7.1, 7.2, 8.0 or 8.1
+
+## Installation
+
+Add the gem to your Gemfile and run `bundle install`:
+
 ```ruby
-dynaspan_text_field(@article, comment, :note, '[edit]')
+gem 'dynaspan'
 ```
-Polymorphic/Nested Example #2:
+
+Then load the JavaScript using whichever asset setup your app uses.
+
+**importmap-rails** (the Rails 7+ default). The pin is added for you, so just
+import it in `app/javascript/application.js`:
+
+```js
+import "dynaspan"
+```
+
+**Sprockets.** Add this to `app/assets/javascripts/application.js`:
+
+```js
+//= require dynaspan/dynaspan
+```
+
+**Propshaft, jsbundling-rails or anything else.** Add a script tag to your
+layout:
+
+```erb
+<%= javascript_include_tag "dynaspan/dynaspan", defer: true %>
+```
+
+Optionally, add the default styles (hover highlight, full-width inputs, saving
+and error states):
+
+```erb
+<%= stylesheet_link_tag "dynaspan/dynaspan" %>
+```
+
+The view helpers are available in every view automatically.
+
+## Usage
+
+```erb
+<%= dynaspan_text_field(@user, :name) %>
+<%= dynaspan_text_area(@user, :bio) %>
+<%= dynaspan_select(@user, :role, choices: [["Administrator", "admin"], ["Editor", "editor"]]) %>
+```
+
+Each helper renders the current value as text, together with a hidden form for
+the record. When the value changes, the form is submitted to the record's
+`update` route (`PATCH /users/:id`), just as a normal `form_with(model: @user)`
+form would be. Your controller only needs to permit the attribute:
+
 ```ruby
-dynaspan_text_field(profile, profile.websites, :url, '[edit]',
-                     {
-                       hidden_fields: {page_name: 'page2'},
-                       callback_on_update: "alert('Awesome!');"
-                     }
-                   )
-```
-This will show the value of note in the comment object as plain text.  It can be clicked on to instantly become a text field input.  And once unselected the `@article` object will update with its nested attribute object `comment` and its new value in the `note` attribute.
+class UsersController < ApplicationController
+  def update
+    @user = User.find(params[:id])
 
-You can use either `dynaspan_text_field` or `dynaspan_text_area` in any of your views.  There are two mandatory parameters.  The first is a the main Object model instance you will be updating.  And the other mandatory field is the symbol of the attribute to update.  There are two optional fields.  The first is the nested attribute object which will have its field updated.  And the last is the optional text for `[edit]`-ing (clicking on to edit which is useful for blank fields).
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to @user }
+        format.json { render json: @user }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:name, :bio, :role)
+  end
+end
+```
+
+The request asks for Turbo Stream, JavaScript, JSON or HTML, in that order, so
+a standard scaffold controller works as it is. Turbo Stream
+(`update.turbo_stream.erb`) and JavaScript (`update.js.erb`) responses are
+applied to the page. A response with an error status (such as a failed
+validation) adds the `ds-error` class to the field and fires `dynaspan:error`.
+
+### Edit text
+
+Blank values have nothing to click on. Pass some edit text as the argument
+after the attribute to give people something to click:
+
+```erb
+<%= dynaspan_text_field(@user, :nickname, "[edit]") %>
+```
+
+### Nested records
+
+Pass the nested record before the attribute to edit it through its parent. The
+parent must have `accepts_nested_attributes_for` for the association:
+
 ```ruby
-dynaspan_text_field(Object,OptionalNestedObject,SymField,OptionalEditText,OptionalOptionsHash)
-dynaspan_text_area(Object,OptionalNestedObject,SymField,OptionalEditText,OptionalOptionsHash)
-dynaspan_select(Object,OptionalNestedObject,SymField,OptionalEditText,OptionsHash)
+class Article < ApplicationRecord
+  has_many :comments
+  accepts_nested_attributes_for :comments
+end
 ```
-The order is important.  And yes it does NOT change even if you just do:
+
+```erb
+<%= dynaspan_text_field(@article, comment, :note, "[edit]") %>
+```
+
+This submits `article[comments_attributes][0][id]` and
+`article[comments_attributes][0][note]` to `ArticlesController#update`.
+Remember to permit `comments_attributes: [:id, :note]`.
+
+### Arguments
+
 ```ruby
-dynaspan_text_field(Object,SymField)
+dynaspan_text_field(record, nested_record = nil, :attribute, edit_text = nil, options = {})
+dynaspan_text_area(record, nested_record = nil, :attribute, edit_text = nil, options = {})
+dynaspan_select(record, nested_record = nil, :attribute, edit_text = nil, options = {}, &block)
 ```
-It is unconventional but the order remains the same despite the optional fields.
 
-### Parameters
+1. **record**: the model instance whose `update` action is called.
+2. **nested_record** (optional): a record from one of `record`'s nested
+   attribute associations.
+3. **:attribute**: a Symbol naming the attribute to edit.
+4. **edit_text** (optional): a String shown next to the value that can also be
+   clicked to start editing.
+5. **options** (optional): a Hash, see below.
 
-The **first** parameter will always be the Object that will have its update method called.  It must be an instance of the Object.
-For example current_user being an instance of User.
+### Options
 
-The **second** parameter can be a symbol of the field you want to update on the main Object from the first parameter.
+| Option | Description |
+| --- | --- |
+| `:choices` | `dynaspan_select` only. The choices for the select: an array, a hash, grouped choices or `options_for_select` output. |
+| `:options` | `dynaspan_select` only. Options for Rails' `select`, such as `include_blank:` or `prompt:`. |
+| `&block` | `dynaspan_select` only. Passed through to Rails' `select`. |
+| `:html_options` | HTML attributes for the input, e.g. `{ class: "wide", rows: 4, placeholder: "Name" }`. Classes are added to Dynaspan's own. `:id`, `:onblur` and `:onfocus` are reserved. |
+| `:hidden_fields` | A Hash of extra values to submit, rendered as hidden fields: `{ page_name: "profile" }`. |
+| `:form_for` | Options for the underlying `form_for`, e.g. `{ url: admin_user_path(@user) }` for namespaced routes. |
+| `:unique_id` | Sets the id suffix used for the elements. By default an id is built from the record, the attribute and some random characters. |
+| `:callback_on_update` | A string of JavaScript run each time a change is sent, e.g. `"refreshTotals();"`. |
+| `:callback_with_values` | A JavaScript function call as a string, e.g. `"saved();"`. A Hash is appended as its last argument: `{ ds_selector: "#dyna_span_block…", ds_input: "entered text" }`. |
 
-The **second** field can also be a has_one or has_many subset of the first argument moving the symbol to modify to the **third** argument.
-For example **dynaspan_text_field(author, author.stories, :title)**.  This works as a nested attribute so it includes Polymorphic Objects.
+For new code, prefer the [JavaScript events](#javascript-events) over the two
+callback options. The callbacks are evaluated as strings, so they need
+`unsafe-eval` if you use a Content Security Policy.
 
-The last two parameters can be edit text, and then additional options (in that order).  Both are optional.  The edit text
-is a way to be able to click somewhere to open up the input to initially enter text.
+## Keyboard
 
-The options Hash currently has these options.
+| Key | Where | Action |
+| --- | --- | --- |
+| <kbd>Tab</kbd> | Page | Move focus to a Dynaspan value |
+| <kbd>Enter</kbd> / <kbd>Space</kbd> | Value | Start editing |
+| <kbd>Enter</kbd> | Text field | Save |
+| <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Enter</kbd> | Text area | Save |
+| <kbd>Esc</kbd> | Field | Cancel and restore the previous value |
 
- - **:hidden_fields** will put in as many hidden fields as you include in a Hash with key->value matching to name->value
- - **:callback_on_update** is a no frills callback.  It runs whatever command you give it whenever Dynaspan submits an update to the server
- - **:callback_with_values** will allow you to put a JavaScript command you want called on update and include as many parameters as you'd like.  It will dynamically append a last parameter which is a Hash of two values.  The first is the CSS selector id of the Dynaspan block that just performed the action, the second value is the actual text that was entered.  The keys in this Hash are **ds_selector** and **ds_input**
- - **:unique_id** allows custom ID labelling.  This is no longer recommended to be used as the in-built method is thorough in its uniqeness.
- - **:form_for** allows adding or over-writing any form_for parameter (besides the object being written to). This takes a Hash of parameters just like you would give in a view for your form_for form.  If you have a namespaced object to update use the **url:** option in the hash for the path to use in updating your object.
- - **:html_options** add your own html options to the input field.  Includes ability to add additional classes with `html_options: {class: "example"}`.  **:id**, **:onfocus**, and **:onblur** are reserved.
- - **:choices** used for **dynaspan_select** for the choices of the select box.
- - **:options** used for **dynaspan_select** for the options of the select box; such as **:disabled**, **:prompt**, or **:include_blank**.
- - **&block** used only with **dynaspan_select** for passing a block to Rails' form select method.
+Clicking anywhere outside the field also saves it. Nothing is sent to the
+server when the value did not change.
 
-### How it updates
+## JavaScript events
 
-The AJAX call will call the update method on your first Object parameter via PATCH.  The optional nested attribute
-and the symbol for the field are all part of the main Object being updated.  There is no expected AJAX reply.  It's
-a silent set it and forget it method.  If you don't have your update method configured with a `.js` response then it
-will successfully perform the update on the object, and then send a complaint about a response but no one will notice
-(unless maybe you look at the server logs).  In other words the client experience is only good, and the server
-won't hiccup over it.
+Events are dispatched on the Dynaspan block (`div.dyna-span`) and bubble up
+to `document`:
 
-### It's too easy!
+| Event | When | `event.detail` |
+| --- | --- | --- |
+| `dynaspan:open` | The field is shown | `selector`, `value` |
+| `dynaspan:close` | The field is hidden | `selector`, `value`, `changed` |
+| `dynaspan:update` | A change is about to be sent. Call `preventDefault()` to skip the request. | `selector`, `input` (display text), `value`, `form` |
+| `dynaspan:success` | The server responded successfully | same as `update`, plus `response` |
+| `dynaspan:error` | The request failed or returned an error status | same as `update`, plus `error` and `response` |
 
-**You're welcome!**
+```js
+document.addEventListener("dynaspan:success", (event) => {
+  console.log("Saved", event.detail.value)
+})
+```
 
--- Daniel P. Clark
+You can also control a field from JavaScript by its id (set it with the
+`:unique_id` option):
 
-### Styles
+```js
+Dynaspan.show("user-name")    // open the field
+Dynaspan.hide("user-name")    // close it and save if changed
+Dynaspan.cancel("user-name")  // close it and discard the change
+```
 
-As of version 0.0.6 a class will be dynamically added/removed to a div tag containing the class "dyna-span".
-That class is "ds-content-present".  The purpose of this class is to allow CSS content styles depending on
-whether your text exists or not.  The '[edit]' text you can use as a parameter normally drops below the input
-box.  If you don't want it to drop you can style it with the proper CSS selector for content present.  E.G.
-`.ds-content-present > dyna-span-edit-text { margin-top:-18px; }` You can set the height to whatever your input
-field height is to maintain the position of the edit text.
+If jQuery is on the page, the 0.x API (`$().dynaspan.upShow(id)`,
+`upHide(id)` and `upLast(id)`) still works.
 
-In version 0.0.7 I've added a class to the parent div object for when the text field dialog is open.  The class
-is "ds-dialog-open". This is also to use in CSS styles.  This feature was added since CSS doesn't support
-calling parents with selectors.  Example usage:
+## Styling
+
+The markup looks like this:
+
+```html
+<div id="dyna_span_block{id}" class="dyna-span ds-content-present" data-dynaspan="{id}">
+  <div id="dyna_span_div{id}" class="dyna-span-form"><form>…the input…</form></div>
+  <span id="dyna_span_span{id}" class="dyna-span dyna-span-text">The value</span>
+  <div class="dyna-span-edit-text pull-right">[edit]</div>
+</div>
+```
+
+These classes are toggled on the outer `div.dyna-span`:
+
+| Class | Present when |
+| --- | --- |
+| `ds-content-present` | The value isn't blank |
+| `ds-dialog-open` | The input is showing |
+| `ds-saving` | A request is in flight |
+| `ds-error` | The last request failed |
+
+The input always has the classes `dyna-span-input` and `form-control` (so it
+fits in with Bootstrap), plus any you add with `html_options`. For example, to
+keep the edit text beside a value instead of below it:
 
 ```css
-.ds-content-present > .dyna-span-edit-text {
-  margin-top:-18px;
-}
-
-.ds-dialog-open > .dyna-span-edit-text {
-  margin-top:-24px;
-}
+.ds-content-present > .dyna-span-edit-text { margin-top: -18px; }
+.ds-dialog-open > .dyna-span-edit-text { margin-top: -24px; }
 ```
 
-### What's New
+To change the markup itself, copy
+[`app/views/dynaspan/_dynaspan.html.erb`](app/views/dynaspan/_dynaspan.html.erb)
+into your application at the same path.
 
+## Upgrading from 0.x
 
-#### Version 0.1.4 & 0.1.5
+- Rails 7.1+ and Ruby 3.1+ are required.
+- jQuery and rails-ujs are no longer needed. Load `dynaspan/dynaspan` as shown in
+  [Installation](#installation). If you had `//= require dynaspan/dynaspan`
+  already, it keeps working.
+- `include Dynaspan::ApplicationHelper` is no longer necessary.
+- A request is sent only when the value changed, so `callback_on_update` and
+  `callback_with_values` only run for real changes.
+- If you overrode `_dynaspan_text_field`, `_dynaspan_text_area` or
+  `_dynaspan_text_select`, move your changes to `_dynaspan.html.erb`.
+- Passing a nested record whose association lacks
+  `accepts_nested_attributes_for` now raises an `ArgumentError`.
 
-Use display name rather than value from option.  And enum behavior may be prone to change so added safeguard scenario.
+See the [CHANGELOG](CHANGELOG.md) for everything else.
 
-#### Version 0.1.3
+## Development
 
-Changed **:unique_id** to work based on the object being rendered and some additional random characters in case the same object will be used more than once.
-
-Added **:html_options** add your own html options to the input field.  Includes ability to add additional classes with `html_options: {class: "example"}`.  **:id**, **:onfocus**, and **:onblur** are reserved.
-
-Added **dynaspan_select** for having a select box dynamically appear.
- - Added **:choices** used for **dynaspan_select** for the choices of the select box.
- - Added **:options** used for **dynaspan_select** for the options of the select box; such as **:disabled**, **:prompt**, or **:include_blank**.
- - Added **&block** used only with **dynaspan_select** for passing a block to Rails' form select method.
-
-
-
-#### Version 0.1.2
-
-Added **unique_id** parameter to the options Hash allowing custom ID labelling which is ideal for JavaScript generated usage.
-
-Added **form_for** parameter to allow adding or over-writing any form_for parameter (besides the object being written to).
-If you have a namespaced object to update use the **url:** option in the hash for the path to use in updating your object.
-
-#### Version 0.1.1
-
-Added a JavaScript callback that will **append** a Hash/Dictionary of the updated Dynaspan Object to the end of your
-functions parameters.  The method is named **callback_with_values**.
-```ruby
-{
-  callback_with_values: "console.log();"
-}
+```sh
+bundle install
+bundle exec rake test                  # helper and browser tests (needs Chrome/Chromium)
+RAILS_VERSION=7.2 bundle update        # test against another Rails version
+bin/demo                               # the demo app at http://localhost:3000
 ```
-This will be called everytime the Dynaspan field submits and it will **inject** the following result **as the last parameter**:
-```ruby
-{
-  ds_selector: "dyna_span_unique_label<#>",
-  ds_input:    "the entered text from the input field"
-}
+
+The browser tests use [Cuprite](https://github.com/rubycdp/cuprite). Set
+`BROWSER_PATH` if Chrome isn't found automatically.
+
+The demo GIF and screenshots above are recorded from `bin/demo` with
+[Playwright](https://playwright.dev) and assembled with
+[Pillow](https://python-pillow.org):
+
+```sh
+PORT=3999 bin/demo &
+node script/demo/record.js        # captures frames and the screenshots
+python3 script/demo/build_gif.py  # writes docs/images/dynaspan-demo.gif
 ```
-#### Version 0.1.0
 
-Added the same hidden_fields from version 0.0.8 to support non-nested Objects.  You can use them now on anything.
+## License
 
-#### Version 0.0.9
-
-JavaScript callback option now available.  Whenever the Dynaspan field is submitted you can have Dynaspan call
-your own JavaScript method.
-```ruby
-{
-  callback_on_update: "someMethod('some-relative-instance-value');"
-}
-```
-#### Version 0.0.8
-
-You can now provide an option hash as a last parameter.  Current
-valid options only include:
-```ruby
-{
-  hidden_fields: { label: "value" }
-}
-```
-You can add as many hidden fields to your Dynaspan objects as you'd like.
-
->NOTE: In this version hidden fields only applies to nested attributes.
-
-Also the id parameter will only be passed to the server if it exists.  (No more empty
-string for id.)  This allows you to create "new" polymorphic child objects with Dynaspan.
-
-### License
-
-The MIT License (MIT)
-
-Copyright (C) 2014-2016 by Daniel P. Clark
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
+The MIT License (MIT). Copyright (C) 2014-2026 by Daniel P. Clark. See
+[LICENSE](LICENSE).
